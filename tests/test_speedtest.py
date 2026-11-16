@@ -91,8 +91,14 @@ class LocalServerTest(unittest.TestCase):
         cls.server.server_close()
 
     def setUp(self):
-        Handler.hits = Handler.active = Handler.max_active = 0
-        Handler.last_headers = None
+        # Клиент получает ответ чуть раньше, чем поток сервера выходит из do_GET.
+        # Ждём, пока сервер закончит запросы прошлого теста, иначе счётчики собьются.
+        deadline = time.monotonic() + 5
+        while Handler.active and time.monotonic() < deadline:
+            time.sleep(0.01)
+        with Handler.lock:
+            Handler.hits = Handler.active = Handler.max_active = 0
+            Handler.last_headers = None
 
     def run_main(self, *argv):
         out, err = io.StringIO(), io.StringIO()

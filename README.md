@@ -1,5 +1,7 @@
 # download-speed-test
 
+[![tests](https://github.com/fry-alt/download-speed-test/actions/workflows/tests.yml/badge.svg)](https://github.com/fry-alt/download-speed-test/actions/workflows/tests.yml)
+
 Консольный скрипт на Python для замера скорости скачивания. Он делает 10
 запросов к указанному адресу по очереди, каждый раз дожидается полного ответа
 и печатает:
